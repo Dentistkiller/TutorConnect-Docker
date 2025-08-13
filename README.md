@@ -171,12 +171,8 @@ volumes:
 
 ## Part B - Create MVC project (Visual Studio)
 
-1. **In VS**: *Create a new project* → **ASP.NET Core Web App (Model-View-Controller)**
+1. **In VS**: *Open the folder containing all our project files* → **ASP.NET Core Web App (Model-View-Controller)**
 
-   * Project name: `Tutor.Web`
-   * Location: `TutorMvcDbFirst/src`
-   * Framework: **.NET 8**
-   * Authentication: **None**
 
 2. **Install NuGet packages** (Project → Manage NuGet Packages):
 
@@ -198,23 +194,10 @@ volumes:
 
 ---
 
-## Part C — DB‑First reverse engineering (scaffold)
+## Part C - DB‑First reverse engineering (scaffold)
 
-**Option A — Package Manager Console (VS):**
-Tools → NuGet Package Manager → **Package Manager Console**:
-
-```powershell
-Scaffold-DbContext `
- "Server=localhost,1433;Database=TutorDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;" `
- Microsoft.EntityFrameworkCore.SqlServer `
- -OutputDir Models `
- -Context TutorContext `
- -DataAnnotations `
- -UseDatabaseNames `
- -NoPluralize
-```
-
-**Option B — dotnet‑ef (terminal in `src/Tutor.Web`):**
+**Option A - Package Manager Console (VS):**
+Tools → NuGet Package Manager → **Package Manager 
 
 ```bash
 dotnet tool install --global dotnet-ef
