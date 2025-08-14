@@ -255,10 +255,10 @@ return View(await sessions.ToListAsync());
 
 ## Part E — Dockerize the MVC app
 
-1. **Add `Dockerfile` in `src`** (next to the `.sln`? No — inside `src/Tutor.Web/`):
+1. **Add `Dockerfile` in `src`** (next to the `.sln`? No — inside `src/TutorConnectDocker/`):
 
 ```dockerfile
-# src/Tutor.Web/Dockerfile
+# src/TutorConnectDocker/Dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
@@ -266,14 +266,14 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
-RUN dotnet restore "./Tutor.Web.csproj"
-RUN dotnet publish "./Tutor.Web.csproj" -c Release -o /app/publish
+RUN dotnet restore "./TutorConnectDocker.csproj"
+RUN dotnet publish "./TutorConnectDocker.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080
-ENTRYPOINT ["dotnet", "Tutor.Web.dll"]
+ENTRYPOINT ["dotnet", "TutorConnectDocker.dll"]
 ```
 
 2. **Build & run with compose** (from repo root where `docker-compose.yml` is):
@@ -302,7 +302,7 @@ Browse to **[http://localhost:8080](http://localhost:8080)**.
 * GitHub repo with:
 
   * `db/` folder (schema and init).
-  * `src/Tutor.Web/` MVC app.
+  * `src/TutorConnectDocker/` MVC app.
   * `Dockerfile` and `docker-compose.yml`.
 * Short README with **how to run**, screenshots of CRUD pages, and a paragraph reflecting on DB‑First vs Code‑First.
 
