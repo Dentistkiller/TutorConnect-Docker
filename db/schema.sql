@@ -1,0 +1,28 @@
+CREATE DATABASE TutorDb;
+GO
+USE TutorDb;
+GO
+
+CREATE TABLE Students (
+    StudentId INT IDENTITY(1,1) PRIMARY KEY,
+    FullName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    PhoneNumber NVARCHAR(15)
+);
+
+CREATE TABLE Tutors (
+    TutorId INT IDENTITY(1,1) PRIMARY KEY,
+    FullName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    Subject NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Sessions (
+    SessionId INT IDENTITY(1,1) PRIMARY KEY,
+    StudentId INT NOT NULL,
+    TutorId INT NOT NULL,
+    SessionDate DATETIME NOT NULL,
+    DurationMinutes INT NOT NULL,
+    FOREIGN KEY (StudentId) REFERENCES Students(StudentId),
+    FOREIGN KEY (TutorId) REFERENCES Tutors(TutorId)
+);

@@ -1,0 +1,38 @@
+# docker-compose.yml
+version: "3.9"
+
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: tutor_sql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+      - ./db:/db:ro
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/1433'"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  web:
+    build:
+      context: ./TutorConnectDocker
+      dockerfile: Dockerfile
+    container_name: TutorConnectDocker
+    depends_on:
+      sql:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__TutorDb=Server=sql,1433;Database=TutorDb;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=True;TrustServerCertificate=True;
+    ports:
+      - "8080:8080"
+
+volumes:
+  mssql_data:
