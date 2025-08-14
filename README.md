@@ -66,7 +66,7 @@ CREATE TABLE Sessions (
 );
 ```
 
-3. **Create an init script** (save as `db/init.sql`) to run after SQL starts:
+3. **Create an init script** (save as `db/init.sql`) this runs when the container spins up:
 
 ```sql
 -- Ensure DB exists and apply schema if needed
@@ -189,9 +189,6 @@ volumes:
   }
 }
 ```
-
-> Note: When running under Docker Compose, the connection will be injected via environment variable `ConnectionStrings__TutorDb`, so you don’t edit this file for container runs.
-
 ---
 
 ## Part C - DB‑First reverse engineering (scaffold)
