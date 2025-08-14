@@ -166,11 +166,6 @@ services:
 volumes:
   mssql_data:
 
-```
-
-> **Checkpoint Q:** What hostname will your app use to reach SQL inside compose?
-> *(Answer verbally before proceeding.)*
-
 ---
 
 ## Part B - Create MVC project (Visual Studio)
@@ -210,8 +205,6 @@ dotnet ef dbcontext scaffold "Server=localhost,1433;Database=TutorDb;User Id=sa;
 ```
 
 You should see `Models/TutorContext.cs` and entity classes for `Students`, `Tutors`, `Sessions`.
-
-> **Mini‑check:** Which attribute enforces required fields on the model? *(Answer, then continue.)*
 
 ---
 
@@ -258,10 +251,6 @@ var sessions = _context.Sessions
     .Include(s => s.Student)
     .Include(s => s.Tutor);
 return View(await sessions.ToListAsync());
-```
-
-> **Mini‑check:** Why do we call `.Include(...)` here?
-
 ---
 
 ## Part E — Dockerize the MVC app
