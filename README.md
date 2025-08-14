@@ -127,6 +127,9 @@ INSERT INTO Tutors (FullName, Email, Subject) VALUES
 4. **Create `docker-compose.yml` at repo root**
 
 ```yaml
+# docker-compose.yml
+version: "3.9"
+
 services:
   sql:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -139,29 +142,30 @@ services:
       - "1433:1433"
     volumes:
       - mssql_data:/var/opt/mssql
-      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./db:/db:ro
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourStrong!Passw0rd", "-Q", "SELECT 1"]
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/127.0.0.1/1433'"]
       interval: 5s
       timeout: 3s
-      retries: 20
+      retries: 30
 
   web:
     build:
-      context: ./src
+      context: ./TutorConnectDocker
       dockerfile: Dockerfile
-    container_name: tutor_web
+    container_name: TutorConnectDocker
     depends_on:
       sql:
         condition: service_healthy
     environment:
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__TutorDb=Server=sql,1433;Database=TutorDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+      - ConnectionStrings__TutorDb=Server=sql,1433;Database=TutorDb;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=True;TrustServerCertificate=True;
     ports:
       - "8080:8080"
 
 volumes:
   mssql_data:
+
 ```
 
 > **Checkpoint Q:** What hostname will your app use to reach SQL inside compose?
