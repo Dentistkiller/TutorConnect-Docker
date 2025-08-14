@@ -200,8 +200,7 @@ Tools → NuGet Package Manager → **Package Manager
 
 ```bash
 dotnet tool install --global dotnet-ef
-dotnet ef dbcontext scaffold "Server=localhost,1433;Database=TutorDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer \
-  --output-dir Models --context TutorContext --data-annotations --use-database-names --no-pluralize
+dotnet ef dbcontext scaffold "Server=localhost,1433;Database=TutorDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer --output-dir Models --context TutorContext --data-annotations --use-database-names --no-pluralize
 ```
 
 You should see `Models/TutorContext.cs` and entity classes for `Students`, `Tutors`, `Sessions`.
@@ -242,15 +241,6 @@ Ensure the `Create.cshtml` for Sessions uses the `asp-items` helpers:
     <span asp-validation-for="TutorId" class="text-danger"></span>
 </div>
 ```
-
-3. **Show related names on index/details**
-   In `SessionsController.Index`, include relationships:
-
-```csharp
-var sessions = _context.Sessions
-    .Include(s => s.Student)
-    .Include(s => s.Tutor);
-return View(await sessions.ToListAsync());
 ---
 
 ## Part E — Dockerize the MVC app
